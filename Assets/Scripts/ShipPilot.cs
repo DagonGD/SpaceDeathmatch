@@ -3,6 +3,9 @@ using System.Collections;
 
 public class ShipPilot : MonoBehaviour {
 
+	public float MoveSpeed;
+	public float RotateSpeed;
+
 	private Rigidbody _rb;
 
 	void Start () {
@@ -11,14 +14,7 @@ public class ShipPilot : MonoBehaviour {
 	
 
 	void FixedUpdate () {
-		//Ship engins always move forward
-		_rb.AddRelativeForce (Input.GetAxis ("Speed") * Vector3.forward * 10);
-
-		var direction = Quaternion.Euler (-Input.GetAxis ("Vertical"), Input.GetAxis ("Horizontal"), 0f);
-
-		//Order matters
-		_rb.rotation = _rb.rotation * direction;
-
-		_rb.velocity = _rb.rotation * _rb.velocity;
+		_rb.AddRelativeForce (Input.GetAxis ("Speed") * Vector3.forward * MoveSpeed);
+		_rb.AddRelativeTorque (new Vector3 (-Input.GetAxis ("Vertical"), Input.GetAxis ("Horizontal"), 0f) * RotateSpeed);
 	}
 }
