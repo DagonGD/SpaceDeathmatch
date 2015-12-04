@@ -12,11 +12,13 @@ public class ShipPilot : MonoBehaviour {
 
 	void FixedUpdate () {
 		//Ship engins always move forward
-		_rb.AddRelativeForce (Input.GetAxis ("Vertical") * Vector3.forward * 10);
+		_rb.AddRelativeForce (Input.GetAxis ("Speed") * Vector3.forward * 10);
 
-		var direction = Quaternion.Euler (0f, Input.GetAxis ("Horizontal"), 0f);
-		_rb.velocity = direction * _rb.velocity;
-		_rb.MoveRotation(Quaternion.LookRotation(_rb.velocity));
-		Debug.Log (_rb.velocity);
+		var direction = Quaternion.Euler (-Input.GetAxis ("Vertical"), Input.GetAxis ("Horizontal"), 0f);
+
+		//Order matters
+		_rb.rotation = _rb.rotation * direction;
+
+		_rb.velocity = _rb.rotation * _rb.velocity;
 	}
 }
